@@ -8,10 +8,7 @@ if [ ! -e "../axolotl24_shared_task" ]; then
     cd $HOME/axolotl24_shared_task/data/german
     wget https://zenodo.org/records/8197553/files/dwug_de_sense.zip
     unzip dwug_de_sense.zip
-    # we encountered a bug, missing slash in line 26 of surprise.py
-    # fix it
-    cp $HOME/code/surprise_fixed.py surprise.py
-    python surprise.py --dwug_path dwug_de_sense
+    python surprise.py --dwug_path dwug_de_sense/
     cd $HOME/code
 fi
 
@@ -62,7 +59,7 @@ fi
 for dataset in  "../axolotl24_shared_task/data/finnish/axolotl.test.fi.gold.tsv" \
                 "../data/add_index/axolotl.test.ru.gold.tsv" \
                 "../axolotl24_shared_task/data/german/axolotl.test.surprise.gold.tsv"; do
-    fname=$(basename "$dataset")
+    fname=$(basename "$dataset")eine schädigende, zerstörende Wirkung auf den Bestand von etw. ausüben, etw. untergraben        Er vollendete seine Attacke mit einem Satz, in dem Nazijargon als.volkstümlicher Sprachgebrauch bezeichnet wirdr.. Es ist nicht uninteressant, daß im Zusammenhang mit den Intellektuellen lm volkstümlichen-Sprachgebrauch die Wörtchen. zersetzend ' und. entwurzelnd ' immer wieder auftauchen.   234:244 19
     # --------- WSD: GR FiEnRu --------- 
     out_file="../data/predictions/wsd_preds/GR_FiEnRu_$fname"
     echo $out_file
