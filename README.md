@@ -6,7 +6,7 @@ This repository contains the code to reproduce the winning solution for [the fir
 **1. Prepare your environment**
 ```
 # first install pytorch appropriate for your system (example for CUDA 11.8)
-pip install pytorch --index-url https://download.pytorch.org/whl/cu118
+pip install pytorch==2.2.0 --index-url https://download.pytorch.org/whl/cu118
 # install the requirements
 pip install -r requirements.txt
 ```
