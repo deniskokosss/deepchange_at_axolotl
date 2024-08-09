@@ -66,10 +66,6 @@ for dataset in  "../axolotl24_shared_task/data/finnish/axolotl.test.fi.gold.tsv"
     # --------- WSD: GR FiEnRu --------- 
     out_file="../data/predictions/wsd_preds/GR_FiEnRu_$fname"
     echo $out_file
-    python gr_wsd.py \
-        --vectors_file glossreader_fienru_v3.json \
-        --dataset $dataset \
-        --pred $out_file
 
     python gr_wsd.py \
         --vectors_file ../data/embedings/GR_FiEnRu.json \
