@@ -1,3 +1,8 @@
+#!/bin/bash
+set -eux  # exit on the first error (-e) or unset variable (-u), print commands (-x)
+
+# remove the commited results, otherwise we will see them even if they are not reproduced!
+rm -rf ../results/*/*tsv
 
 HOME=$(pwd)/..
 
@@ -17,7 +22,7 @@ echo $(pwd)
 
 # This step requires some GPU time
 # To bypass you can simply download the embedings from zenodo
-SKIP_EMBEDING=1
+SKIP_EMBEDING=0
 # -------Generate embeddings----------
 if [ $SKIP_EMBEDING != 0 ]; then
     if [ ! -e glossreader_embs.zip ]; then 
@@ -32,13 +37,13 @@ else
         cd $HOME/data/models
         wget https://zenodo.org/records/13256679/files/GR_FiEnRu.tar.gz
         tar -xvzf GR_FiEnRu.tar.gz
-        cd $HOME
+        cd -
     fi
     if [ ! -e "../data/models/GR/model.pt" ]; then
         cd $HOME/data/models
-        mkdir GR
+        mkdir -p GR
         wget https://zenodo.org/records/10530146/files/best_model.ckpt -O GR/model.pt
-        cd $HOME
+        cd -
     fi
 
     if [ ! -e "../data/embedings/GR_FiEnRu.json" ]; then
@@ -69,7 +74,7 @@ for dataset in  "../axolotl24_shared_task/data/finnish/axolotl.test.fi.gold.tsv"
         --dataset $dataset \
         --pred $out_file
 
-    mkdir ../results/WSD_GR_FiEnRu
+    mkdir -p ../results/WSD_GR_FiEnRu
     python ../axolotl24_shared_task/code/evaluation/scorer_track1.py \
         --gold $dataset \
         --pred $out_file \
@@ -84,7 +89,7 @@ for dataset in  "../axolotl24_shared_task/data/finnish/axolotl.test.fi.gold.tsv"
         --dataset $dataset \
         --pred $out_file
 
-    mkdir ../results/WSD_GR
+    mkdir -p ../results/WSD_GR
     python ../axolotl24_shared_task/code/evaluation/scorer_track1.py \
         --gold $dataset \
         --pred $out_file \
@@ -112,7 +117,7 @@ for dataset in  "../axolotl24_shared_task/data/finnish/axolotl.test.fi.gold.tsv"
         --wsd ../data/predictions/wsd_preds/GR_FiEnRu_$fname \
         --wsi none -t 0.65 \
         -p ../data/predictions/outlier2cluster/fi_$fname
-    mkdir ../results/outlier2cluster_fi
+    mkdir -p ../results/outlier2cluster_fi
     python ../axolotl24_shared_task/code/evaluation/scorer_track1.py \
         --gold $dataset \
         --pred ../data/predictions/outlier2cluster/fi_$fname \
@@ -132,7 +137,7 @@ for dataset in  "../axolotl24_shared_task/data/finnish/axolotl.test.fi.gold.tsv"
         --wsi ../data/predictions/wsi_preds/$fname -t 0.65 \
         -p ../data/predictions/outlier2cluster/ru_$fname
 
-    mkdir ../results/outlier2cluster_ru
+    mkdir -p ../results/outlier2cluster_ru
     python ../axolotl24_shared_task/code/evaluation/scorer_track1.py \
         --gold $dataset \
         --pred ../data/predictions/outlier2cluster/ru_$fname \
@@ -144,7 +149,7 @@ for dataset in  "../axolotl24_shared_task/data/finnish/axolotl.test.fi.gold.tsv"
         -d $dataset \
         -p ../data/predictions/agglom/GR_FiEnRu_$fname -k 0 -l single
 
-    mkdir ../results/AggloM_FiEnRu
+    mkdir -p ../results/AggloM_FiEnRu
     python ../axolotl24_shared_task/code/evaluation/scorer_track1.py \
         --gold $dataset \
         --pred ../data/predictions/agglom/GR_FiEnRu_$fname \
@@ -156,7 +161,7 @@ for dataset in  "../axolotl24_shared_task/data/finnish/axolotl.test.fi.gold.tsv"
         -d $dataset \
         -p ../data/predictions/agglom/GR_$fname -k 0 -l single
 
-    mkdir ../results/AggloM
+    mkdir -p ../results/AggloM
     python ../axolotl24_shared_task/code/evaluation/scorer_track1.py \
         --gold $dataset \
         --pred ../data/predictions/agglom/GR_$fname \
@@ -169,7 +174,7 @@ for dataset in  "../axolotl24_shared_task/data/finnish/axolotl.test.fi.gold.tsv"
         -d $dataset \
         -p ../data/predictions/cluster2sense/$fname
 
-    mkdir ../results/cluster2sense
+    mkdir -p ../results/cluster2sense
     python ../axolotl24_shared_task/code/evaluation/scorer_track1.py \
         --gold $dataset \
         --pred ../data/predictions/cluster2sense/$fname \
