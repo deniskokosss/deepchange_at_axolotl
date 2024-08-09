@@ -59,7 +59,7 @@ fi
 for dataset in  "../axolotl24_shared_task/data/finnish/axolotl.test.fi.gold.tsv" \
                 "../data/add_index/axolotl.test.ru.gold.tsv" \
                 "../axolotl24_shared_task/data/german/axolotl.test.surprise.gold.tsv"; do
-    fname=$(basename "$dataset")eine schädigende, zerstörende Wirkung auf den Bestand von etw. ausüben, etw. untergraben        Er vollendete seine Attacke mit einem Satz, in dem Nazijargon als.volkstümlicher Sprachgebrauch bezeichnet wirdr.. Es ist nicht uninteressant, daß im Zusammenhang mit den Intellektuellen lm volkstümlichen-Sprachgebrauch die Wörtchen. zersetzend ' und. entwurzelnd ' immer wieder auftauchen.   234:244 19
+    fname=$(basename "$dataset")
     # --------- WSD: GR FiEnRu --------- 
     out_file="../data/predictions/wsd_preds/GR_FiEnRu_$fname"
     echo $out_file
