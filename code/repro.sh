@@ -1,10 +1,46 @@
 #!/bin/bash
+
+# bash repro.sh -c -> do not clear intermediate results before running the script
+# bash repro.sh -d -> download embeddings instead of building them from scratch
+
 set -eux  # exit on the first error (-e) or unset variable (-u), print commands (-x)
 
 # remove the commited results, otherwise we will see them even if they are not reproduced!
 rm -rf ../results/*/*tsv
 
+# Define the options and their descriptions
+
+opts=":d:c"
+optstring="download embeddings instead of building them:use cache"
+
+# Parse the options
+REMOVE_CACHE=1
+SKIP_EMBEDING=0
+while getopts "$optstring" opt
+do
+    case $opt in
+        c)
+            REMOVE_CACHE=0
+            ;;
+        d)
+            SKIP_EMBEDING=1
+            ;;
+        \?)
+             "Invalid option: -$OPTARG" >&2
+            exit 1
+            ;;
+    esac
+done
+
 HOME=$(pwd)/..
+
+
+if [ $REMOVE_CACHE != 0 ]; then
+    echo "Removing cache"
+    cd ..
+    xargs rm -f < code/cached_files.txt
+    cd -
+fi
 
 if [ ! -e "../axolotl24_shared_task" ]; then
     cd $HOME
@@ -20,11 +56,9 @@ fi
 
 echo $(pwd)
 
-# This step requires some GPU time
-# To bypass you can simply download the embedings from zenodo
-SKIP_EMBEDING=0
 # -------Generate embeddings----------
 if [ $SKIP_EMBEDING != 0 ]; then
+    echo "Downloading embeddings"
     if [ ! -e glossreader_embs.zip ]; then 
         wget https://zenodo.org/records/11086527/files/glossreader_embs.zip
         unzip glossreader_embs.zip -d ../data/embedings/downloaded
@@ -33,6 +67,7 @@ if [ $SKIP_EMBEDING != 0 ]; then
         rm -r ../data/embedings/downloaded
     fi
 else
+    echo "Building embeddings"
     if [ ! -e "../data/models/GR_FiEnRu/model.safetensors" ]; then
         cd $HOME/data/models
         wget https://zenodo.org/records/13256679/files/GR_FiEnRu.tar.gz
@@ -45,7 +80,6 @@ else
         wget https://zenodo.org/records/10530146/files/best_model.ckpt -O GR/model.pt
         cd -
     fi
-
     if [ ! -e "../data/embedings/GR_FiEnRu.json" ]; then
         echo "Vectorizing FiEnRu"
         python gr_vectorize.py \
@@ -95,6 +129,7 @@ for dataset in  "../axolotl24_shared_task/data/finnish/axolotl.test.fi.gold.tsv"
         --pred $out_file \
         -o ../results/WSD_GR/$fname
 
+    fi
     # --------- WSI: Agglomerative --------- 
     # we currently use precomputed predictions
     python ../axolotl24_shared_task/code/evaluation/scorer_track1.py \
@@ -182,4 +217,4 @@ for dataset in  "../axolotl24_shared_task/data/finnish/axolotl.test.fi.gold.tsv"
 
 done
 
-python build_report.py
+python build_report.py | tee ../results/table.txt

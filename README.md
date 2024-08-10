@@ -11,6 +11,8 @@ This repository contains the code to reproduce the winning solution for [the fir
 pip install pytorch==2.2.0 --index-url https://download.pytorch.org/whl/cu118
 # install the requirements
 pip install -r requirements.txt
+# OR you can use precise package versions to ensure reproduction
+pip install -r requirements.lock
 ```
 **2. Run the full reproduction script**
 
@@ -18,15 +20,17 @@ pip install -r requirements.txt
 cd code
 bash repro.sh
 ```
+Note: you can use -c option to use cached results and -d option to download embeddings insted of generating them
 **3. Results**
 ```
                     ARI_fi  ARI_ru  ARI_de  F1_fi  F1_ru  F1_de
-WSD_GR_FiEnRu        0.649   0.048   0.521  0.756  0.750  0.745
-WSD_GR               0.581   0.041   0.386  0.690  0.721  0.694
-outlier2cluster_fi   0.649   0.047   0.480  0.756  0.747  0.745
-outlier2cluster_ru   0.278   0.247   0.322  0.414  0.645  0.510
+AggloM               0.581   0.044   0.492  0.674  0.639  0.695
+AggloM_FiEnRu        0.631   0.035   0.485  0.731  0.640  0.639
+WSD_GR               0.589   0.041   0.386  0.692  0.721  0.694
+WSD_GR_FiEnRu        0.645   0.048   0.521  0.753  0.750  0.745
 WSI_agglomerative    0.209   0.259   0.316  0.055  0.152  0.042
-AggloM_FiEnRu        0.631   0.037   0.485  0.731  0.636  0.639
-AggloM               0.581   0.026   0.492  0.674  0.643  0.695
 cluster2sense        0.209   0.259   0.316  0.392  0.346  0.432
+outlier2cluster_fi   0.646   0.047   0.480  0.753  0.747  0.745
+outlier2cluster_ru   0.274   0.247   0.322  0.410  0.645  0.510
 ```
+Note: the results for the Finnish dataset are slightly different from our results in the competition  
