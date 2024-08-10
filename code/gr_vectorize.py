@@ -92,7 +92,7 @@ if __name__ == '__main__':
     assert df['usage_id'].nunique() == df.shape[0]
 
     cache = {'contexts': {}, "glosses": {}}
-    if not args.no_cuda:
+    if not args.no_cuda and torch.cuda.is_available():
         glossreader = glossreader.to('cuda:0')
     for _, row in tqdm(df.iterrows(), total=len(df)):
         assert row['usage_id'] not in cache['contexts'].keys()

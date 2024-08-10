@@ -1,6 +1,8 @@
 # [AXOLOTL24 subtask 1](https://github.com/ltgoslo/axolotl24_shared_task/tree/main) solution by DeepChange team
 
-This repository contains the code to reproduce the winning solution for [the first subtask of the AXOLOTL24 shared task on Explainable Semantic Change Modeling](https://github.com/ltgoslo/axolotl24_shared_task/tree/main). A detailed description of our approach is provided in the paper (TBD).
+This repository contains the code to reproduce the winning solution for [the first subtask of the AXOLOTL24 shared task on Explainable Semantic Change Modeling](https://github.com/ltgoslo/axolotl24_shared_task/tree/main). A detailed description of our approach is provided in our paper (link TBD):
+
+[**Denis Kokosinskii, Mikhail Kuklin, and Nikolay Arefyev. 2024. Deep-change at AXOLOTL-24: Orchestrating WSD and WSI Models for Semantic Change Modeling.** _In Proceedings of the 5th Workshop on Computational Approaches to Historical Language Change, Bangkok. Association for Computational Linguistics._](https://aclanthology.org/2024.lchange-1.16/)
 
 ## Reproduction
 **1. Prepare your environment**
