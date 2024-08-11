@@ -1,6 +1,6 @@
 # [AXOLOTL24 subtask 1](https://github.com/ltgoslo/axolotl24_shared_task/tree/main) solution by DeepChange team
 
-This repository contains the code to reproduce the winning solution for [the first subtask of the AXOLOTL24 shared task on Explainable Semantic Change Modeling](https://github.com/ltgoslo/axolotl24_shared_task/tree/main). A detailed description of our approach is provided in our paper (link TBD):
+This repository contains the code to reproduce the winning solution for [the first subtask of the AXOLOTL24 shared task on Explainable Semantic Change Modeling](https://github.com/ltgoslo/axolotl24_shared_task/tree/main). A detailed description of our approach is provided in our paper:
 
 [**Denis Kokosinskii, Mikhail Kuklin, and Nikolay Arefyev. 2024. Deep-change at AXOLOTL-24: Orchestrating WSD and WSI Models for Semantic Change Modeling.** _In Proceedings of the 5th Workshop on Computational Approaches to Historical Language Change, Bangkok. Association for Computational Linguistics._](https://aclanthology.org/2024.lchange-1.16/)
 
@@ -20,7 +20,8 @@ pip install -r requirements.lock
 cd code
 bash repro.sh
 ```
-Note: you can use -c option to use cached results and -d option to download embeddings insted of generating them
+Note: you can use -c option to use cached results and -d option to download embeddings insted of generating them.
+
 **3. Results**
 ```
                     ARI_fi  ARI_ru  ARI_de  F1_fi  F1_ru  F1_de
