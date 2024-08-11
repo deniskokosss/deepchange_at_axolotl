@@ -18,5 +18,5 @@ for method in os.listdir("../results"):
         res.append(m)
     
 res = pd.DataFrame(res).set_index('method')
-res = res[['ARI_fi', "ARI_ru", 'ARI_de', 'F1_fi', "F1_ru", 'F1_de']]
+res = res[['ARI_fi', "ARI_ru", 'ARI_de', 'F1_fi', "F1_ru", 'F1_de']].sort_index()
 print(res.round(3))
