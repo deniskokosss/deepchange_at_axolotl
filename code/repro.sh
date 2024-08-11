@@ -128,8 +128,6 @@ for dataset in  "../axolotl24_shared_task/data/finnish/axolotl.test.fi.gold.tsv"
         --gold $dataset \
         --pred $out_file \
         -o ../results/WSD_GR/$fname
-
-    fi
     # --------- WSI: Agglomerative --------- 
     # we currently use precomputed predictions
     python ../axolotl24_shared_task/code/evaluation/scorer_track1.py \
