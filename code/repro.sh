@@ -80,6 +80,13 @@ else
         wget https://zenodo.org/records/10530146/files/best_model.ckpt -O GR/model.pt
         cd -
     fi
+    if [ ! -e "../data/models/GR_FiSG/model.safetensors" ]; then
+        cd $HOME/data/models
+        mkdir -p GR_FiSG
+        wget https://zenodo.org/records/13327175/files/model.safetensors -O GR_FiSG/model.safetensors
+        cd -
+    fi
+
     if [ ! -e "../data/embedings/GR_FiEnRu.json" ]; then
         echo "Vectorizing FiEnRu"
         python gr_vectorize.py \
@@ -92,6 +99,12 @@ else
             --model ../data/models/GR/model.pt \
             --out_file ../data/embedings/GR.json
     fi
+    if [ ! -e "../data/embedings/GR_FiSG.json" ]; then
+        echo "Vectorizing GR FiSG"
+        python gr_vectorize.py \
+            --model ../data/models/GR_FiSG/model.safetensors \
+            --out_file ../data/embedings/GR_FiSG.json
+    fi
 fi
 
 # We use our version russian dataset, where target word positions are added
@@ -99,7 +112,7 @@ for dataset in  "../axolotl24_shared_task/data/finnish/axolotl.test.fi.gold.tsv"
                 "../data/add_index/axolotl.test.ru.gold.tsv" \
                 "../axolotl24_shared_task/data/german/axolotl.test.surprise.gold.tsv"; do
     fname=$(basename "$dataset")
-    # --------- WSD: GR FiEnRu --------- 
+    # # --------- WSD: GR FiEnRu --------- 
     out_file="../data/predictions/wsd_preds/GR_FiEnRu_$fname"
     echo $out_file
 
@@ -113,6 +126,21 @@ for dataset in  "../axolotl24_shared_task/data/finnish/axolotl.test.fi.gold.tsv"
         --gold $dataset \
         --pred $out_file \
         -o ../results/WSD_GR_FiEnRu/$fname
+
+    # --------- WSD: GR FiSG --------- 
+    out_file="../data/predictions/wsd_preds/GR_FiSG_$fname"
+    echo $out_file
+
+    python gr_wsd.py \
+        --vectors_file ../data/embedings/GR_FiSG.json \
+        --dataset $dataset \
+        --pred $out_file
+
+    mkdir -p ../results/WSD_GR_FiSG
+    python ../axolotl24_shared_task/code/evaluation/scorer_track1.py \
+        --gold $dataset \
+        --pred $out_file \
+        -o ../results/WSD_GR_FiSG/$fname
 
     
     # --------- WSD: GR --------- 

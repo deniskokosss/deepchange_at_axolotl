@@ -6,11 +6,17 @@ This repository contains the code to reproduce the winning solution for [the fir
 
 ## Reproduction
 **1. Prepare your environment**
+Your existing environment
 ```
 # first install pytorch appropriate for your system (example for CUDA 11.8)
 pip install pytorch==2.2.0 --index-url https://download.pytorch.org/whl/cu118
 # install the requirements
 pip install -r requirements.txt
+```
+New environment
+```
+conda create -n deepchange_axolotl python=3.9.19
+conda activate deepchange_axolotl
 # OR you can use precise package versions to ensure reproduction
 pip install -r requirements.lock
 ```
@@ -24,11 +30,12 @@ Note: you can use -c option to use cached results and -d option to download embe
 
 **3. Results**
 ```
-                    ARI_fi  ARI_ru  ARI_de  F1_fi  F1_ru  F1_de
+                    ARI_fi  ARI_ru  ARI_de  F1_fi  F1_ru  F1_de      
 AggloM               0.581   0.044   0.492  0.674  0.639  0.695
 AggloM_FiEnRu        0.631   0.035   0.485  0.731  0.640  0.639
 WSD_GR               0.589   0.041   0.386  0.692  0.721  0.694
 WSD_GR_FiEnRu        0.645   0.048   0.521  0.753  0.750  0.745
+WSD_GR_FiSG          0.638   0.059   0.543  0.752  0.729  0.758
 WSI_agglomerative    0.209   0.259   0.316  0.055  0.152  0.042
 cluster2sense        0.209   0.259   0.316  0.392  0.346  0.432
 outlier2cluster_fi   0.646   0.047   0.480  0.753  0.747  0.745

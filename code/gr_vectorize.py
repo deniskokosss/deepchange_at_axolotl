@@ -65,8 +65,10 @@ if __name__ == '__main__':
     
     glossreader = GlossReader()
     if args.model.endswith('.safetensors'):
-        load_model(glossreader, args.model, strict=False)
+        print(f"load_model(glossreader, {args.model})")
+        print(load_model(glossreader, args.model, strict=False))
     elif args.model.endswith('GR/model.pt'):
+        print(f"torch.load({args.model}, map_location='cpu')")
         cpt = torch.load(args.model, map_location='cpu')
         state_dict = {
             k.replace("gloss_encoder.gloss_encoder.", 'gloss_encoder.'): v 
