@@ -6,6 +6,7 @@ This repository contains the code to reproduce the winning solution for [the fir
 
 ## Reproduction
 **1. Prepare your environment**
+
 If you want to exactly reproduce our environment, use Python 3.9.19.
 (Optional) create a new environment. E.g. if you use conda:
 ```
