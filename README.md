@@ -6,18 +6,19 @@ This repository contains the code to reproduce the winning solution for [the fir
 
 ## Reproduction
 **1. Prepare your environment**
-Your existing environment
+If you want to exactly reproduce our environment, use Python 3.9.19.
+(Optional) create a new environment. E.g. if you use conda:
+```
+conda create -n deepchange_axolotl python=3.9.19
+conda activate deepchange_axolotl
+```
+Install dependencies:
 ```
 # first install pytorch appropriate for your system (example for CUDA 11.8)
 pip3 install torch==2.2.0 torchaudio==2.2.0 torchvision==0.17.0 --index-url https://download.pytorch.org/whl/cu118
 # install the requirements
 pip install -r requirements.txt
-```
-New environment
-```
-conda create -n deepchange_axolotl python=3.9.19
-conda activate deepchange_axolotl
-# OR you can use precise package versions to ensure reproduction
+# OR use precise package versions to ensure reproduction
 pip install -r requirements.lock
 ```
 **2. Run the full reproduction script**
