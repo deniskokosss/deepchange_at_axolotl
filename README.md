@@ -9,7 +9,7 @@ This repository contains the code to reproduce the winning solution for [the fir
 Your existing environment
 ```
 # first install pytorch appropriate for your system (example for CUDA 11.8)
-pip install pytorch==2.2.0 --index-url https://download.pytorch.org/whl/cu118
+pip3 install torch==2.2.0 torchaudio==2.2.0 torchvision==0.17.0 --index-url https://download.pytorch.org/whl/cu118
 # install the requirements
 pip install -r requirements.txt
 ```
