@@ -20,6 +20,9 @@ data/predictions/outlier2cluster/ru_axolotl.test.surprise.gold.tsv
 data/predictions/cluster2sense/axolotl.test.fi.gold.tsv
 data/predictions/cluster2sense/axolotl.test.ru.gold.tsv
 data/predictions/cluster2sense/axolotl.test.surprise.gold.tsv
+results/WSD_GR_FiSG/axolotl.test.fi.gold.tsv
+results/WSD_GR_FiSG/axolotl.test.ru.gold.tsv
+results/WSD_GR_FiSG/axolotl.test.surprise.gold.tsv
 results/WSD_GR_FiEnRu/axolotl.test.fi.gold.tsv
 results/WSD_GR_FiEnRu/axolotl.test.ru.gold.tsv
 results/WSD_GR_FiEnRu/axolotl.test.surprise.gold.tsv
@@ -55,3 +58,6 @@ data/models/NSD/NSD_russian.pkl
 data/embedings/GR_FiSG.json
 data/models/GR_FiSG/model.safetensors
 code/glossreader_embs.zip
+data/predictions/wsd_preds/GR_FiSG_axolotl.test.fi.gold.tsv
+data/predictions/wsd_preds/GR_FiSG_axolotl.test.ru.gold.tsv
+data/predictions/wsd_preds/GR_FiSG_axolotl.test.surprise.gold.tsv

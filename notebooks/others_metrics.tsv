@@ -1,0 +1,7 @@
+method ARI_fi ARI_ru ARI_de F1_fi F1_ru F1_de
+Holotniekat 0.596 0.043 0.298 0.655 0.661 0.608
+TartuNLP 0.437 0.098 0.396 0.55 0.64 0.58
+IMS_Stuttgart 0.548 0 0.314 0.59 0.57 0.3
+ABDN-NLP 0.553 0.009 0.102 0.655 0 0.638
+WooperNLP 0.428 0.132 0 0.503 0.446 0
+"Baseline official" 0.023 0.079 0.022 0.23 0.26 0.13

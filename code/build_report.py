@@ -18,5 +18,13 @@ for method in os.listdir("../results"):
         res.append(m)
     
 res = pd.DataFrame(res).set_index('method')
-res = res[['ARI_fi', "ARI_ru", 'ARI_de', 'F1_fi', "F1_ru", 'F1_de']]
+res = res[['ARI_fi', "ARI_ru", 'ARI_de', 'F1_fi', "F1_ru", 'F1_de']].sort_index()
 print(res.round(3))
+
+target_metrics = pd.read_csv('target_metrics.tsv',sep=' +', engine='python').set_index('method')
+print('\nAre results from the paper reproduced?')
+print( ((res-target_metrics).abs() < 0.002) )
+
+target_metrics = pd.read_csv('target_metrics_upd.tsv',sep=' +', engine='python').set_index('method')
+print('\nAre results from README reproduced?')
+print( ((res-target_metrics).abs() < 0.002) )
