@@ -129,13 +129,34 @@ for dataset in  "../axolotl24_shared_task/data/finnish/axolotl.test.fi.gold.tsv"
         --pred $out_file \
         -o ../results/WSD_GR/$fname
 
-    fi
     # --------- WSI: Agglomerative --------- 
     # we currently use precomputed predictions
     python ../axolotl24_shared_task/code/evaluation/scorer_track1.py \
         --gold $dataset \
         --pred ../data/predictions/wsi_preds/$fname \
         -o ../results/WSI_agglomerative/$fname
+
+    # --------- WSI: Agglomerative GR --------- 
+    python Agglomerative.py \
+        -e ../data/embedings/GR.json \
+        -d $dataset \
+        -p ../data/predictions/wsi_preds/GR_$fname
+    
+    python ../axolotl24_shared_task/code/evaluation/scorer_track1.py \
+        --gold $dataset \
+        --pred ../data/predictions/wsi_preds/GR_$fname \
+        -o ../results/WSI_agglomerative_GR/$fname
+
+    # --------- WSI: Agglomerative GR FiEnRu --------- 
+    python Agglomerative.py \
+        -e ../data/embedings/GR_FiEnRu.json \
+        -d $dataset \
+        -p ../data/predictions/wsi_preds/GR_FiEnRu_$fname
+    
+    python ../axolotl24_shared_task/code/evaluation/scorer_track1.py \
+        --gold $dataset \
+        --pred ../data/predictions/wsi_preds/GR_FiEnRu_$fname \
+        -o ../results/WSI_agglomerative_GR_FiEnRu/$fname
 
     #  SCM: Outlier2Cluster fi
     if [ ! -e ../data/models/NSD/NSD_finnish.pkl ]; then

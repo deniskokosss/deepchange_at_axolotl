@@ -8,7 +8,6 @@ from sklearn.metrics.pairwise import pairwise_distances
 
 
 def agglomerative(points, labels, affinity, linkage, n_clusters):
-    """returns labels and ARI for different n_clusters"""
     is_new = labels < 0
     all_dists = pairwise_distances(points, metric=affinity)
     while len(np.unique(labels)) > n_clusters:
