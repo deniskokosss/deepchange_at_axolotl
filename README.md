@@ -46,9 +46,9 @@ outlier2cluster_ru   0.274   0.247   0.322  0.410  0.645  0.510
 ```
 Note: the results for the Finnish dataset are slightly different from our results in the competition.
 
-<details><summary>Exact reproduction of the results from the paper run the reproduction with the precomputed embeddings</summary>
+<details><summary>Exact reproduction of the results from the paper: run the reproduction with the precomputed embeddings</summary>
 
-In the competition we used an intermetiadate checkpoint of the model for the Finnish dataset, which was later lost. However, the difference in results is only at third decimal digit.
+In the competition we used an intermetiadate checkpoint of the GR model for the Finnish dataset, which was later lost. However, the difference in results is only at the third decimal digit.
 
 To get the exact results from the paper run
 
@@ -60,7 +60,7 @@ Which results in:
                     ARI_fi  ARI_ru  ARI_de  F1_fi  F1_ru  F1_de
 AggloM               0.581   0.044   0.492  0.674  0.643  0.695
 AggloM_FiEnRu        0.631   0.035   0.485  0.731  0.636  0.639
-WSD_GR               0.581*  0.041   0.386  0.690* 0.721  0.694
+WSD_GR               _0.581_>0.589  0.041   0.386  0.690* 0.721  0.694
 WSD_GR_FiEnRu        0.649*  0.048   0.521  0.756* 0.750  0.745
 WSI_agglomerative    0.209   0.259   0.316  0.055  0.152  0.042
 cluster2sense        0.209   0.259   0.316  0.392  0.346  0.432
