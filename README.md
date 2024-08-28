@@ -69,3 +69,24 @@ outlier2cluster_ru   0.278   0.247   0.322  0.414  0.645  0.510
 ```
 \* – our results for Finnish from the leaderboard, which can be reproduced exactly only with the pre-computed embeddings from the lost GR checkpoint
 </details>
+
+**4. Improvements after publication**
+
+Some methods were improved by using a better WSI model. The results are the following:
+```
+                             ARI_fi  ARI_ru  ARI_de  F1_fi  F1_ru  F1_de
+method                                                                  
+WSI_agglomerative             0.209   0.259   0.316  0.055  0.152  0.042
+WSI_agglomerative_improved    0.265   0.304   0.445  0.055  0.152  0.042
+cluster2sense                 0.209   0.259   0.316  0.392  0.346  0.432
+cluster2sense_improved        0.265   0.304   0.445  0.398  0.289  0.465
+outlier2cluster_ru            0.274   0.247   0.322  0.410  0.645  0.510
+outlier2cluster_ru_improved   0.276   0.254   0.326  0.410  0.645  0.510
+```
+
+To reproduce them run:
+
+```
+bash improvements.sh
+```
+
