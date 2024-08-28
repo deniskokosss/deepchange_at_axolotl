@@ -82,12 +82,6 @@ else
         wget https://zenodo.org/records/10530146/files/best_model.ckpt -O GR/model.pt
         cd -
     fi
-    if [ ! -e "../data/models/GR_FiSG/model.safetensors" ]; then
-        cd $HOME/data/models
-        mkdir -p GR_FiSG
-        wget https://zenodo.org/records/13327175/files/model.safetensors -O GR_FiSG/model.safetensors
-        cd -
-    fi
 
     if [ ! -e "../data/embedings/GR_FiEnRu.json" ]; then
         echo "Vectorizing FiEnRu"
@@ -100,12 +94,6 @@ else
         python gr_vectorize.py \
             --model ../data/models/GR/model.pt \
             --out_file ../data/embedings/GR.json
-    fi
-    if [ ! -e "../data/embedings/GR_FiSG.json" ]; then
-        echo "Vectorizing GR FiSG"
-        python gr_vectorize.py \
-            --model ../data/models/GR_FiSG/model.safetensors \
-            --out_file ../data/embedings/GR_FiSG.json
     fi
 fi
 
@@ -123,42 +111,6 @@ for dataset in  "../axolotl24_shared_task/data/finnish/axolotl.test.fi.gold.tsv"
         --dataset $dataset \
         --pred $out_file
 
-    mkdir -p ../results/WSD_GR_FiEnRu
-    python ../axolotl24_shared_task/code/evaluation/scorer_track1.py \
-        --gold $dataset \
-        --pred $out_file \
-        -o ../results/WSD_GR_FiEnRu/$fname
-
-    # --------- WSD: GR FiSG --------- 
-    out_file="../data/predictions/wsd_preds/GR_FiSG_$fname"
-    echo $out_file
-
-    python gr_wsd.py \
-        --vectors_file ../data/embedings/GR_FiSG.json \
-        --dataset $dataset \
-        --pred $out_file
-
-    mkdir -p ../results/WSD_GR_FiSG
-    python ../axolotl24_shared_task/code/evaluation/scorer_track1.py \
-        --gold $dataset \
-        --pred $out_file \
-        -o ../results/WSD_GR_FiSG/$fname
-
-    
-    # --------- WSD: GR --------- 
-    out_file="../data/predictions/wsd_preds/GR_$fname"
-    echo $out_file
-    python gr_wsd.py \
-        --vectors_file ../data/embedings/GR.json \
-        --dataset $dataset \
-        --pred $out_file
-
-    mkdir -p ../results/WSD_GR
-    python ../axolotl24_shared_task/code/evaluation/scorer_track1.py \
-        --gold $dataset \
-        --pred $out_file \
-        -o ../results/WSD_GR/$fname
-
     # --------- WSI: Agglomerative --------- 
     # we currently use precomputed predictions
     python ../axolotl24_shared_task/code/evaluation/scorer_track1.py \
@@ -166,20 +118,8 @@ for dataset in  "../axolotl24_shared_task/data/finnish/axolotl.test.fi.gold.tsv"
         --pred ../data/predictions/wsi_preds/$fname \
         -o ../results/WSI_agglomerative/$fname
 
-    # --------- WSI: Agglomerative GR --------- 
-    mkdir -p ../results/WSI_agglomerative_GR
-    python Agglomerative.py \
-        -e ../data/embedings/GR.json \
-        -d $dataset \
-        -p ../data/predictions/wsi_preds/GR_$fname
-    
-    python ../axolotl24_shared_task/code/evaluation/scorer_track1.py \
-        --gold $dataset \
-        --pred ../data/predictions/wsi_preds/GR_$fname \
-        -o ../results/WSI_agglomerative_GR/$fname
-
-    # --------- WSI: Agglomerative GR FiEnRu --------- 
-    mkdir -p ../results/WSI_agglomerative_GR_FiEnRu
+    # --------- WSI: Agglomerative GR FiEnRu ---------
+    mkdir -p ../results/WSI_agglomerative_improved 
     python Agglomerative.py \
         -e ../data/embedings/GR_FiEnRu.json \
         -d $dataset \
@@ -188,28 +128,9 @@ for dataset in  "../axolotl24_shared_task/data/finnish/axolotl.test.fi.gold.tsv"
     python ../axolotl24_shared_task/code/evaluation/scorer_track1.py \
         --gold $dataset \
         --pred ../data/predictions/wsi_preds/GR_FiEnRu_$fname \
-        -o ../results/WSI_agglomerative_GR_FiEnRu/$fname
+        -o ../results/WSI_agglomerative_improved/$fname
 
-    #  SCM: Outlier2Cluster fi
-    if [ ! -e ../data/models/NSD/NSD_finnish.pkl ]; then
-        python NSD_train.py \
-            -e ../data/embedings/GR_FiEnRu.json,../data/embedings/GR.json \
-            -d ../axolotl24_shared_task/data/finnish/axolotl.dev.fi.tsv \
-            -m ../data/models/NSD/NSD_finnish.pkl
-    fi
 
-    #  SCM: Outlier2Cluster fi
-    python outlier2cluster.py \
-        -e ../data/embedings/GR_FiEnRu.json,../data/embedings/GR.json \
-        -d $dataset -m ../data/models/NSD/NSD_finnish.pkl \
-        --wsd ../data/predictions/wsd_preds/GR_FiEnRu_$fname \
-        --wsi none -t 0.65 \
-        -p ../data/predictions/outlier2cluster/fi_$fname
-    mkdir -p ../results/outlier2cluster_fi
-    python ../axolotl24_shared_task/code/evaluation/scorer_track1.py \
-        --gold $dataset \
-        --pred ../data/predictions/outlier2cluster/fi_$fname \
-        -o ../results/outlier2cluster_fi/$fname
 
     #  SCM: Outlier2Cluster ru
     if [ ! -e ../data/models/NSD/NSD_russian.pkl ]; then
@@ -231,29 +152,20 @@ for dataset in  "../axolotl24_shared_task/data/finnish/axolotl.test.fi.gold.tsv"
         --pred ../data/predictions/outlier2cluster/ru_$fname \
         -o ../results/outlier2cluster_ru/$fname
 
-    #  SCM: Agglom GR FiEnRu
-    python AggloM.py \
-        -e ../data/embedings/GR_FiEnRu.json \
-        -d $dataset \
-        -p ../data/predictions/agglom/GR_FiEnRu_$fname -k 0 -l single
+    #  SCM: Outlier2Cluster ru improved
+    python outlier2cluster.py \
+        -e ../data/embedings/GR_FiEnRu.json,../data/embedings/GR.json \
+        -d $dataset -m ../data/models/NSD/NSD_russian.pkl \
+        --wsd ../data/predictions/wsd_preds/GR_FiEnRu_$fname \
+        --wsi ../data/predictions/wsi_preds/GR_FiEnRu_$fname -t 0.65 \
+        -p ../data/predictions/outlier2cluster/ru_improved_$fname
 
-    mkdir -p ../results/AggloM_FiEnRu
+    mkdir -p ../results/outlier2cluster_ru_improved
     python ../axolotl24_shared_task/code/evaluation/scorer_track1.py \
         --gold $dataset \
-        --pred ../data/predictions/agglom/GR_FiEnRu_$fname \
-        -o ../results/AggloM_FiEnRu/$fname
+        --pred ../data/predictions/outlier2cluster/ru_improved_$fname \
+        -o ../results/outlier2cluster_ru_improved/$fname
 
-    #  SCM: Agglom GR
-    python AggloM.py \
-        -e ../data/embedings/GR.json \
-        -d $dataset \
-        -p ../data/predictions/agglom/GR_$fname -k 0 -l single
-
-    mkdir -p ../results/AggloM
-    python ../axolotl24_shared_task/code/evaluation/scorer_track1.py \
-        --gold $dataset \
-        --pred ../data/predictions/agglom/GR_$fname \
-        -o ../results/AggloM/$fname
 
     #  SCM: cluster2sense
     python cluster2sense.py \
@@ -267,6 +179,19 @@ for dataset in  "../axolotl24_shared_task/data/finnish/axolotl.test.fi.gold.tsv"
         --gold $dataset \
         --pred ../data/predictions/cluster2sense/$fname \
         -o ../results/cluster2sense/$fname
+
+    #  SCM: cluster2sense_improved
+    python cluster2sense.py \
+        --wsd ../data/predictions/wsd_preds/GR_FiEnRu_$fname \
+        --wsi ../data/predictions/wsi_preds/GR_FiEnRu_$fname \
+        -d $dataset \
+        -p ../data/predictions/cluster2sense/improved_$fname
+
+    mkdir -p ../results/cluster2sense_improved
+    python ../axolotl24_shared_task/code/evaluation/scorer_track1.py \
+        --gold $dataset \
+        --pred ../data/predictions/cluster2sense/improved_$fname \
+        -o ../results/cluster2sense_improved/$fname
 
 done
 
