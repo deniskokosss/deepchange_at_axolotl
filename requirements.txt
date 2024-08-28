@@ -10,3 +10,5 @@ safetensors==0.4.2
 huggingface_hub>=0.24.5
 accelerate
 seaborn
+datasets==2.21.0
+tensorboardX

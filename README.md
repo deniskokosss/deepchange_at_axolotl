@@ -69,3 +69,4 @@ outlier2cluster_ru   0.278   0.247   0.322  0.414  0.645  0.510
 ```
 \* – our results for Finnish from the leaderboard, which can be reproduced exactly only with the pre-computed embeddings from the lost GR checkpoint
 </details>
+** Refer to code/finetune_GR.sh script to retrain the models**
