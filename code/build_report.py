@@ -8,7 +8,7 @@ datasets = {
 }
 res = []
 for method in os.listdir("../results"):
-    if os.path.isdir(f"../results/{method}"):
+    if os.path.isdir(f"../results/{method}") and len(os.listdir(f"../results/{method}")) != 0:
         m = {'method': method}
         for path,name in datasets.items():
             with open(f"../results/{method}/{path}") as f:

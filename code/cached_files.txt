@@ -52,12 +52,15 @@ data/models/GR_FiEnRu/model.safetensors
 data/models/GR_FiEnRu.tar.gz
 data/embedings/GR_FiEnRu.json
 data/embedings/GR.json
+data/embedings/GR_FiSG.json
+data/embedings/GR_Ru.json
 data/glossreader_embs.zip
 data/models/NSD/NSD_finnish.pkl
 data/models/NSD/NSD_russian.pkl
 data/embedings/GR_FiSG.json
 data/models/GR_FiSG/model.safetensors
 code/glossreader_embs.zip
+code/glossreader_embs_p2.tar.gz
 data/predictions/wsd_preds/GR_FiSG_axolotl.test.fi.gold.tsv
 data/predictions/wsd_preds/GR_FiSG_axolotl.test.ru.gold.tsv
 data/predictions/wsd_preds/GR_FiSG_axolotl.test.surprise.gold.tsv
