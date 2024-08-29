@@ -90,3 +90,6 @@ To reproduce them run:
 bash improvements.sh
 ```
 
+**5. Retrain the models**
+Refer to code/finetune_GR.sh
+
