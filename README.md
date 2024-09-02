@@ -95,5 +95,5 @@ bash improvements.sh
 ```
 
 **5. Retrain the models**
-Refer to code/finetune_GR.sh
 
+Refer to code/finetune_GR.sh. You may need to edit the script according to your hardware.

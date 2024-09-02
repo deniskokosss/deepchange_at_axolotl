@@ -185,11 +185,16 @@ if __name__ == '__main__':
     parser = ArgumentParser()
     parser.add_argument('--datasets', type=str, required=True, help='fienru , fi or ru', default='fienru')
     parser.add_argument('--sg', action='store_true', default=False, help='Use Special Gloss instead of gained senses')
+    parser.add_argument('--batch', type=int, default=8, help='per_device_train_batch_size')
+    parser.add_argument('--ga', type=int, default=1, help='gradient_accumulation_steps')
+    parser.add_argument('--seed', type=int, default=42, help='Random seed')
+    parser.add_argument('--run_name', type=str, default="glossreader_retrain0", help='Random seed')
+
     args = parser.parse_args()
 
     train_sets = []
     valid_sets = {}
-    np.random.seed(42)
+    np.random.seed(args.seed)
     if 'ru' in args.datasets.lower():
         df = pd.read_csv("../data/add_index/axolotl.train.ru.tsv", sep='\t')
         df['indices_target_token'] = df['indices_target_token'].str.replace('-', ':')
@@ -231,11 +236,12 @@ if __name__ == '__main__':
                   data_collator=collate_fn,
                   compute_metrics=log_similarities,
                   args=TrainingArguments(
-                        output_dir=f'../data/models/glossreader_retrain0_{args.datasets}' + ('_SG' if args.sg else ''),
+                        output_dir=f'../data/models/{args.run_name}_{args.datasets}' + ('_SG' if args.sg else ''),
                         eval_delay=0,
                         report_to='tensorboard',
-                        learning_rate=3e-05,
-                        per_device_train_batch_size=8,
+                        learning_rate=3e-06,
+                        per_device_train_batch_size=args.batch,
+                        gradient_accumulation_steps=args.ga,
                         warmup_ratio=0.05,
                         logging_steps=10,
                         logging_first_step=True,
@@ -243,6 +249,7 @@ if __name__ == '__main__':
                         save_steps=100,
                         evaluation_strategy='steps',
                         eval_steps=100,
+                        seed=args.seed, data_seed=args.seed
                   ))
-    
+    print(f"World size: {trainer.accelerator.num_processes}")
     trainer.train()
