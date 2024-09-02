@@ -239,7 +239,7 @@ if __name__ == '__main__':
                         output_dir=f'../data/models/{args.run_name}_{args.datasets}' + ('_SG' if args.sg else ''),
                         eval_delay=0,
                         report_to='tensorboard',
-                        learning_rate=3e-06,
+                        learning_rate=3e-05,
                         per_device_train_batch_size=args.batch,
                         gradient_accumulation_steps=args.ga,
                         warmup_ratio=0.05,
