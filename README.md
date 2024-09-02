@@ -16,8 +16,6 @@ conda activate deepchange_axolotl
 ```
 Install dependencies:
 ```
-# first install pytorch appropriate for your system (example for CUDA 11.8)
-pip3 install torch==2.2.0 torchaudio==2.2.0 torchvision==0.17.0 --index-url https://download.pytorch.org/whl/cu118
 # install the requirements
 pip install -r requirements.txt
 # OR use precise package versions to ensure reproduction

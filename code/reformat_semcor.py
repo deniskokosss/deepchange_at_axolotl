@@ -17,12 +17,9 @@ from transformers import RobertaTokenizer, RobertaModel, BertTokenizer, BertMode
 import seaborn as sns
 import pandas as pd
 
-try:
-	from nltk.corpus import wordnet as wn
-except:
-	import nltk
-	nltk.download('wordnet')
-	from nltk.corpus import wordnet as wn
+import nltk
+nltk.download('wordnet')
+from nltk.corpus import wordnet as wn
 
 pos_converter = {'NOUN':'n', 'PROPN':'n', 'VERB':'v', 'AUX':'v', 'ADJ':'a', 'ADV':'r'}
 
