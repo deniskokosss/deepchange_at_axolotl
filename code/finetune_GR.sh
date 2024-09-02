@@ -1,9 +1,24 @@
 
 set -eux 
 
+HOME=$(pwd)/..
+if [ ! -e "../axolotl24_shared_task" ]; then
+    cd $HOME
+    git clone https://github.com/ltgoslo/axolotl24_shared_task.git
+    cd axolotl24_shared_task
+    git reset --hard 6ccddbb6e536993ccb60cadbdb37fc95b68cbd9a
+    # prepare german dataset
+    cd $HOME/axolotl24_shared_task/data/german
+    wget https://zenodo.org/records/8197553/files/dwug_de_sense.zip
+    unzip dwug_de_sense.zip
+    python surprise.py --dwug_path dwug_de_sense/
+    cd $HOME/code
+fi
+
+
 if [ ! -e ../data/english/semcor.train.en.tsv ]; then
     pip install nltk
-    rm WSD_Evaluation_Framework.zip
+    rm -f WSD_Evaluation_Framework.zip
     rm -rf WSD_Evaluation_Framework
     wget http://lcl.uniroma1.it/wsdeval/data/WSD_Evaluation_Framework.zip
     unzip WSD_Evaluation_Framework
