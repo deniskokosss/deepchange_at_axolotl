@@ -59,9 +59,11 @@ def get_features(df, embs_list):
 
 def predict(dataset, model, tresh=0.5):
     X = dataset.drop(columns=['is_outlier', 'usage_id']).astype(float).values
-    preds = model.predict_proba(X)[:, 1] > tresh
-    outliers = pd.DataFrame({'usage_id': dataset.usage_id, 'is_outlier': preds})
-    return outliers
+    probs = (model.predict_proba(X)[:, 1])
+    labels = probs > tresh
+    outliers = pd.DataFrame({'usage_id': dataset.usage_id, 'is_outlier': labels})
+    outliers_probs = pd.DataFrame({'usage_id': dataset.usage_id, 'is_outlier_prob': probs})
+    return outliers, outliers_probs
 
 def prep_for_submit(wsi_preds, wsd_preds, outliers):
     wsd_preds = wsd_preds.merge(outliers, on='usage_id', how='left')
@@ -87,6 +89,8 @@ def main():
     arg("--wsi", help="Path to the input WSI predictions TSV file. Pass 'none' if not needed.", required=True)
     arg("--tresh", "-t", help="Treshold for NSD model", required=True)
     arg("--predict", "-p", help="Path for the output predictions TSV file", required=True)
+    arg("--predict_extended", help="Path for additional tsv output containing NSD probabilities. Only produce file if path is specified",
+        default="")
     args = parser.parse_args()
     
     df = pd.read_csv(args.dataset, sep='\t')
@@ -102,7 +106,9 @@ def main():
         model = pickle.load(f)
 
     dataset = create_dataset(df, embs_list)
-    outliers = predict(dataset, model, float(args.tresh))
+    outliers, outliers_probs = predict(dataset, model, float(args.tresh))
+    if args.predict_extended != "":
+        outliers_probs.to_csv(args.predict_extended, sep='\t', index=False)
     preds = prep_for_submit(wsi_preds, wsd_preds, outliers)
     preds.to_csv(args.predict, sep='\t', index=False)
 
