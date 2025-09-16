@@ -262,6 +262,22 @@ for dataset in  "../axolotl24_shared_task/data/finnish/axolotl.test.fi.gold.tsv"
         --pred ../data/predictions/outlier2cluster/ru_$fname \
         -o ../results/outlier2cluster_ru/$fname
 
+    # SCM: Outlier2Cluster single feature baseline
+    dist=norm_l1_0
+    python outlier2cluster.py \
+      -e ../data/embedings/GR_FiEnRu.json,../data/embedings/GR.json \
+      -d $dataset --single_feature $dist \
+      --wsd ../data/predictions/wsd_preds/GR_FiEnRu_$fname \
+      --wsi ../data/predictions/wsi_preds/$fname -t 1.2914 \
+      -p ../data/predictions/outlier2cluster/${dist}_${fname}
+
+    mkdir -p ../results/outlier2cluster_${dist}
+    python ../axolotl24_shared_task/code/evaluation/scorer_track1.py \
+        --gold $dataset \
+        --pred ../data/predictions/outlier2cluster/${dist}_${fname} \
+        -o ../results/outlier2cluster_${dist}/$fname
+
+
     #  SCM: Agglom GR FiEnRu
     python AggloM.py \
         -e ../data/embedings/GR_FiEnRu.json \

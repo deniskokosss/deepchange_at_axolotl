@@ -58,8 +58,8 @@ def get_features(df, embs_list):
     return result
 
 def predict(dataset, model, tresh=0.5):
-    X = dataset.drop(columns=['is_outlier', 'usage_id']).astype(float).values
-    probs = (model.predict_proba(X)[:, 1])
+    X = dataset.drop(columns=['is_outlier', 'usage_id']).astype(float)
+    probs = X[model].values if isinstance(model, str) else model.predict_proba(X.values)[:, 1]
     labels = probs > tresh
     outliers = pd.DataFrame({'usage_id': dataset.usage_id, 'is_outlier': labels})
     outliers_probs = pd.DataFrame({'usage_id': dataset.usage_id, 'is_outlier_prob': probs})
@@ -84,7 +84,11 @@ def main():
     arg = parser.add_argument
     arg("--embeds", "-e", help="Path to the list of json files with GlossReader embeddings, seperated with ','", required=True)
     arg("--dataset", "-d", help="Path to the dataset TSV file", required=True)
-    arg("--model", "-m", help="Path to the trained NSD model .pkl file", required=True)
+    # Create a mutually exclusive group
+    group = parser.add_mutually_exclusive_group(required=True)
+    group.add_argument("--model", "-m", help="Path to the trained NSD model .pkl file")
+    group.add_argument("--single_feature", "-s", help="A single feature to rely on", default='norm_l1_0')
+
     arg("--wsd", help="Path to the input WSD predictions TSV file", required=True)
     arg("--wsi", help="Path to the input WSI predictions TSV file. Pass 'none' if not needed.", required=True)
     arg("--tresh", "-t", help="Treshold for NSD model", required=True)
@@ -102,10 +106,14 @@ def main():
         with open(embeds_path, 'r') as f:
             embs_list.append(json.load(f))
 
-    with open(args.model, 'rb') as f:
-        model = pickle.load(f)
-
     dataset = create_dataset(df, embs_list)
+
+    if args.model:
+        with open(args.model, 'rb') as f:
+            model = pickle.load(f)
+    else:
+        model = args.single_feature
+
     outliers, outliers_probs = predict(dataset, model, float(args.tresh))
     if args.predict_extended != "":
         outliers_probs.to_csv(args.predict_extended, sep='\t', index=False)
